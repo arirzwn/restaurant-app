@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const BundleAnalyzerPlugin =
   require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -42,7 +43,7 @@ module.exports = {
                 options: {
                   plugins: [
                     ['jpegtran', { progressive: true }],
-                    ['optipng', { optimizationLevel: 5 }],
+                    ['optipng', { optimizationLevel: 3 }],
                   ],
                 },
               },
@@ -63,14 +64,16 @@ module.exports = {
   },
   optimization: {
     minimizer: [
-      '...',
+      new TerserPlugin({
+        parallel: true, // Enable parallel processing
+      }),
       new ImageMinimizerPlugin({
         minimizer: {
           implementation: ImageMinimizerPlugin.imageminMinify,
           options: {
             plugins: [
               ['jpegtran', { progressive: true }],
-              ['optipng', { optimizationLevel: 5 }],
+              ['optipng', { optimizationLevel: 3 }],
             ],
           },
         },
@@ -93,6 +96,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: path.resolve(__dirname, 'src/templates/index.html'),
+      cache: true, // Enable caching
     }),
     new CopyWebpackPlugin({
       patterns: [
@@ -148,7 +152,7 @@ module.exports = {
           options: {
             cacheName: 'image-assets',
             expiration: {
-              maxEntries: 60,
+              maxEntries: 30,
               maxAgeSeconds: 30 * 24 * 60 * 60,
             },
           },
@@ -160,7 +164,7 @@ module.exports = {
             cacheName: 'restaurant-api',
             networkTimeoutSeconds: 5,
             expiration: {
-              maxEntries: 100,
+              maxEntries: 50,
               maxAgeSeconds: 60 * 60,
             },
           },
@@ -171,7 +175,7 @@ module.exports = {
           options: {
             cacheName: 'restaurant-images',
             expiration: {
-              maxEntries: 100,
+              maxEntries: 50,
               maxAgeSeconds: 30 * 24 * 60 * 60,
             },
             cacheableResponse: {
@@ -186,7 +190,7 @@ module.exports = {
             cacheName: 'restaurant-detail',
             networkTimeoutSeconds: 5,
             expiration: {
-              maxEntries: 50,
+              maxEntries: 25,
               maxAgeSeconds: 7 * 24 * 60 * 60,
             },
           },
