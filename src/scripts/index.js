@@ -31,6 +31,12 @@ menuButton.addEventListener('keyup', (event) => {
   }
 });
 
+// Example of reserving space for an image
+const imagePlaceholder = document.createElement('div');
+imagePlaceholder.style.width = '300px';
+imagePlaceholder.style.height = '250px';
+document.body.appendChild(imagePlaceholder);
+
 function generateStarRating(rating) {
   const starContainer = document.createElement('div');
   starContainer.classList.add('rating');
