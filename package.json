@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start-dev": "npx webpack-dev-server --config webpack.dev.js",
-    "build": " webpack --config webpack.prod.js",
+    "build": "npm run build-image && webpack --config webpack.prod.js",
     "serve": "http-server dist",
     "test": "jest",
     "test:watch": "jest --watchAll",

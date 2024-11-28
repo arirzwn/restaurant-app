@@ -11,7 +11,7 @@ const BundleAnalyzerPlugin =
 
 const plugins = [
   new CleanWebpackPlugin({
-    cleanOnceBeforeBuildPatterns: ['**/*', '!images/**'],
+    cleanOnceBeforeBuildPatterns: ['**/*', '!images/**', '!images/heros/**'], // Exclude images/heros directory
   }),
   new HtmlWebpackPlugin({
     filename: 'index.html',
@@ -34,6 +34,10 @@ const plugins = [
       {
         from: path.resolve(__dirname, 'src/public/app.webmanifest'),
         to: path.resolve(__dirname, 'dist/'),
+      },
+      {
+        from: path.resolve(__dirname, 'dist/images/heros/'), // Ensure generated images are copied
+        to: path.resolve(__dirname, 'dist/images/heros/'),
       },
     ],
   }),
