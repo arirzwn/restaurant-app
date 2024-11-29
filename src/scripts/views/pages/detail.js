@@ -110,11 +110,11 @@ export async function displayRestaurantDetail(id) {
         data.restaurant
       );
 
-      const FavoriteButtonInitiator = (
-        await import(
-          /* webpackChunkName: "favorite-button-initiator" */ '../../utils/favorite-button-initiator'
-        )
-      ).default;
+      const { default: FavoriteButtonInitiator } = await import(
+        /* webpackChunkName: "favorite-button-initiator" */
+        '../../utils/favorite-button-initiator'
+      );
+
       FavoriteButtonInitiator.init({
         favoriteButtonContainer: document.querySelector(
           '#favoriteButtonContainer'

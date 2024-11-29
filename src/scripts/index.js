@@ -4,8 +4,11 @@ import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 import '../styles/main.css';
 import App from './views/app';
 import API_ENDPOINT from './globals/api-endpoint';
-import './utils/sw-register';
 import FavoriteRestaurantIdb from './data/favorite-restaurant-idb';
+
+const loadSW = async () => {
+  await import(/* webpackChunkName: "sw-register" */ './utils/sw-register');
+};
 
 const menuButton = document.querySelector('.app-bar__menu');
 const navigation = document.querySelector('.app-bar__navigation');
@@ -30,11 +33,6 @@ menuButton.addEventListener('keyup', (event) => {
     menuButton.classList.toggle('open');
   }
 });
-
-const imagePlaceholder = document.createElement('div');
-imagePlaceholder.style.width = '300px';
-imagePlaceholder.style.height = '250px';
-document.body.appendChild(imagePlaceholder);
 
 function generateStarRating(rating) {
   const starContainer = document.createElement('div');
@@ -104,10 +102,12 @@ export async function displayRestaurants() {
   `;
 
   try {
-    const restaurants = await fetchRestaurants();
-    const favoriteRestaurants = await FavoriteRestaurantIdb.getAllRestaurants();
-    const favoriteIds = favoriteRestaurants.map((restaurant) => restaurant.id);
+    const [restaurants, favoriteRestaurants] = await Promise.all([
+      fetchRestaurants(),
+      FavoriteRestaurantIdb.getAllRestaurants(),
+    ]);
 
+    const favoriteIds = favoriteRestaurants.map((restaurant) => restaurant.id);
     const nonFavoriteRestaurants = restaurants.filter(
       (restaurant) => !favoriteIds.includes(restaurant.id)
     );
@@ -153,6 +153,7 @@ window.addEventListener('hashchange', async () => {
 });
 
 window.addEventListener('load', async () => {
+  await loadSW();
   await app.renderPage();
   if (!window.location.hash) {
     await displayRestaurants();
