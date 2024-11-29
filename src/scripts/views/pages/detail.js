@@ -91,7 +91,7 @@ async function handleReviewSubmission(restaurantId) {
   });
 }
 
-async function displayRestaurantDetail(id) {
+export async function displayRestaurantDetail(id) {
   const restaurantDetailContainer =
     document.querySelector('.restaurant-detail');
 

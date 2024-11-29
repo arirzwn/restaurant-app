@@ -31,7 +31,6 @@ menuButton.addEventListener('keyup', (event) => {
   }
 });
 
-// Example of reserving space for an image
 const imagePlaceholder = document.createElement('div');
 imagePlaceholder.style.width = '300px';
 imagePlaceholder.style.height = '250px';
@@ -62,10 +61,10 @@ function createRestaurantItem(restaurant) {
   restaurantItem.style.minHeight = '200px'; // Set a fixed height to avoid layout shifts
 
   restaurantItem.innerHTML = `
-    <img src="https://restaurant-api.dicoding.dev/images/medium/${restaurant.pictureId}" 
+    <img data-src="https://restaurant-api.dicoding.dev/images/medium/${restaurant.pictureId}" 
          alt="${restaurant.name}" 
          crossorigin="anonymous" 
-         tabindex="-1" />
+         tabindex="-1"  class="lazyload"/>
     <h2 tabindex="0">${restaurant.name}</h2>
     <p tabindex="0">${restaurant.city}</p>
     <div class="rating-container" tabindex="0"></div>
@@ -137,6 +136,29 @@ export async function displayRestaurants() {
   }
 }
 
+const app = new App({
+  content: document.querySelector('#main-content'),
+});
+
+document.addEventListener('click', async (event) => {
+  if (event.target.classList.contains('view-details-btn')) {
+    event.preventDefault();
+    const url = event.target.getAttribute('href');
+    window.location.hash = url;
+  }
+});
+
+window.addEventListener('hashchange', async () => {
+  await app.renderPage();
+});
+
+window.addEventListener('load', async () => {
+  await app.renderPage();
+  if (!window.location.hash) {
+    await displayRestaurants();
+  }
+});
+
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
@@ -158,19 +180,4 @@ window.addEventListener('beforeinstallprompt', (e) => {
       deferredPrompt = null;
     });
   });
-});
-
-const app = new App({
-  content: document.querySelector('#main-content'),
-});
-
-window.addEventListener('hashchange', () => {
-  app.renderPage();
-});
-
-window.addEventListener('load', async () => {
-  if (!window.location.hash) {
-    await displayRestaurants();
-  }
-  app.renderPage();
 });

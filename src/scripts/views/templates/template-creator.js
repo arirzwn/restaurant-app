@@ -5,8 +5,8 @@ const createRestaurantDetailTemplate = (restaurant) => `
       document.getElementById('skipToDetailLink').focus();
     </script>
     <img src="https://restaurant-api.dicoding.dev/images/large/${
-      restaurant.pictureId
-    }"
+  restaurant.pictureId
+}"
          alt="${restaurant.name}"
          crossorigin="anonymous"
          loading="lazy"
@@ -23,20 +23,20 @@ const createRestaurantDetailTemplate = (restaurant) => `
     <h3 tabindex="0">🍝 Food Menu 🥘</h3>
     <div class="food-menu">
       ${restaurant.menus.foods
-        .map(
-          (food) =>
-            `<div class="food-card" tabindex="0"><p>${food.name}</p></div>`
-        )
-        .join('')}
+    .map(
+      (food) =>
+        `<div class="food-card" tabindex="0"><p>${food.name}</p></div>`
+    )
+    .join('')}
     </div>
     <h3 tabindex="0">☕ Drink Menu🍹</h3>
     <div class="drink-menu">
       ${restaurant.menus.drinks
-        .map(
-          (drink) =>
-            `<div class="drink-card" tabindex="0"><p>${drink.name}</p></div>`
-        )
-        .join('')}
+    .map(
+      (drink) =>
+        `<div class="drink-card" tabindex="0"><p>${drink.name}</p></div>`
+    )
+    .join('')}
     </div>
     <h3 tabindex="0">Customer Reviews</h3>
     <div class="review-form">
@@ -50,16 +50,16 @@ const createRestaurantDetailTemplate = (restaurant) => `
     <div class="carousel">
       <div class="carousel-inner">
         ${restaurant.customerReviews
-          .map(
-            (review) => `
+    .map(
+      (review) => `
           <div class="carousel-item" tabindex="0">
             <p>${review.name}</p>
             <p>${review.review}</p>
             <p>${review.date}</p>
           </div>
         `
-          )
-          .join('')}
+    )
+    .join('')}
       </div>
     </div>
   </div>
