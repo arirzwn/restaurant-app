@@ -1,26 +1,19 @@
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    if (!navigator.serviceWorker.controller) {
-      navigator.serviceWorker.register('/sw.js').then((registration) => {
-        if (registration.waiting) {
-          registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-        }
-        registration.addEventListener('updatefound', () => {
-          const newWorker = registration.installing;
-          newWorker.addEventListener('statechange', () => {
-            if (
-              newWorker.state === 'installed' &&
-              navigator.serviceWorker.controller
-            ) {
-              newWorker.postMessage({ type: 'SKIP_WAITING' });
-            }
-          });
-        });
-      });
+import { Workbox } from 'workbox-window';
 
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        window.location.reload();
-      });
-    }
-  });
-}
+const swRegister = async () => {
+  if (!('serviceWorker' in navigator)) {
+    console.log('Service Worker not supported in the browser');
+    return;
+  }
+
+  const wb = new Workbox('./sw.bundle.js');
+
+  try {
+    await wb.register();
+    console.log('Service worker registered');
+  } catch (error) {
+    console.log('Failed to register service worker', error);
+  }
+};
+
+export default swRegister;

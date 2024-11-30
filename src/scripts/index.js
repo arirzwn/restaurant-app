@@ -5,6 +5,7 @@ import '../styles/main.css';
 import App from './views/app';
 import API_ENDPOINT from './globals/api-endpoint';
 import FavoriteRestaurantIdb from './data/favorite-restaurant-idb';
+import swRegister from './utils/sw-register';
 
 const loadSW = async () => {
   await import(/* webpackChunkName: "sw-register" */ './utils/sw-register');
@@ -158,6 +159,7 @@ window.addEventListener('load', async () => {
   if (!window.location.hash) {
     await displayRestaurants();
   }
+  swRegister();
 });
 
 let deferredPrompt;
