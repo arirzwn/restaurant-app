@@ -53,8 +53,12 @@ const plugins = [
       },
     },
   }),
-  new BundleAnalyzerPlugin(),
 ];
+
+// Tambahkan BundleAnalyzerPlugin hanya jika dalam mode development
+if (process.env.NODE_ENV === 'development') {
+  plugins.push(new BundleAnalyzerPlugin());
+}
 
 module.exports = {
   entry: {
